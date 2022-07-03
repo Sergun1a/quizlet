@@ -27,5 +27,22 @@ class Menu:
         chosen_action = dictionary.post_addition_actions()
         if chosen_action == purify("N"):
             self.translation_start(dictionary)
-        if chosen_action == purify("S"):
-            self.main_menu()
+
+    def quizlet_start(self, quizlet):
+        clear_screen()
+        quizlet.random_translation()
+        quizlet.post_translation_actions()
+        chosen_action = wait(('N', 'S', 'R'))
+        if chosen_action == purify('N'):
+            self.quizlet_start(quizlet)
+        if chosen_action == purify('R'):
+            quizlet.results()
+            chosen_action = wait('S')
+
+    def help(self):
+        clear_screen()
+        print(""" 
+        Справка по работе с программой
+        """)
+        print("\n\nНажмите клавишу \"S\" для выхода в главное меню\n")
+        chosen_action = wait('S')
