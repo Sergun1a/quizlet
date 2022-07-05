@@ -30,14 +30,18 @@ class Menu:
 
     def quizlet_start(self, quizlet):
         clear_screen()
-        quizlet.random_translation()
-        quizlet.post_translation_actions()
-        chosen_action = wait(('N', 'S', 'R'))
-        if chosen_action == purify('N'):
-            self.quizlet_start(quizlet)
-        if chosen_action == purify('R'):
-            quizlet.results()
+        res = quizlet.random_translation()
+        if res:
+            quizlet.results("Вы перевели все слова во всех словарях.\n")
             chosen_action = wait('S')
+        else:
+            quizlet.post_translation_actions()
+            chosen_action = wait(('N', 'S', 'R'))
+            if chosen_action == purify('N'):
+                self.quizlet_start(quizlet)
+            if chosen_action == purify('R'):
+                quizlet.results()
+                chosen_action = wait('S')
 
     def help(self):
         clear_screen()
