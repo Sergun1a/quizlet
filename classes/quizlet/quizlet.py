@@ -1,5 +1,6 @@
 import random
-from helpers.helpers import wait, clear_screen, purify
+
+from helpers.helpers import clear_screen, purify
 
 
 class Quizlet:
@@ -94,8 +95,8 @@ class Quizlet:
         """
         clear_screen()
         print(reason)
-        # избегаю деления на ноль
-        if self.__en_ru_total_translations == 0:
+
+        if self.__en_ru_total_translations == 0:  # избегаю деления на ноль
             en_ru_percent = (self.__en_ru_correct_translations / 1) * 100
         else:
             en_ru_percent = (self.__en_ru_correct_translations / self.__en_ru_total_translations) * 100
