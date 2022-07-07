@@ -3,6 +3,11 @@ from helpers.helpers import wait, clear_screen, purify
 
 class Menu:
     def main_menu(self):
+        """
+        Главное меню. Выбор основного действия: добавление перевода, начало викторины, получение справки
+
+        :return:
+        """
         clear_screen()
         print("""
         Выберите желаемое действие
@@ -12,15 +17,26 @@ class Menu:
         """)
         return wait(("1", "2", "3"))
 
-    # выбираю тип перевода. С русского на английский или наоборот с английского на русский
     def translatation_type_select(self, dictionaries):
+        """
+        Выбираю тип перевода. С русского на английский или наоборот с английского на русский
+
+        :param dictionaries: доступные для добавления переводов словари
+        :return: none
+        """
         clear_screen()
-        print("1. " + dictionaries[0].get_primary_language() + " на " + dictionaries[0].get_secondary_language())
-        print("2. " + dictionaries[1].get_primary_language() + " на " + dictionaries[1].get_secondary_language())
+        print("1. " + dictionaries[0].primary_language + " на " + dictionaries[0].secondary_language)
+        print("2. " + dictionaries[1].primary_language + " на " + dictionaries[1].secondary_language)
         chosen_type = wait(("1", "2"))
         self.translation_start(dictionaries[int(chosen_type) - 1])
 
     def translation_start(self, dictionary):
+        """
+        Начинаю перевод. Запрашиваю данные у пользователя и добавляю их в словарь.
+
+        :param dictionary: словарь в который будут добавляться переводы
+        :return: none
+        """
         clear_screen()
         translation_data = dictionary.request_translation_data()
         dictionary.add_new_translation(translation_data[0], translation_data[1])
@@ -29,11 +45,17 @@ class Menu:
             self.translation_start(dictionary)
 
     def quizlet_start(self, quizlet):
+        """
+        Начинаю викторину. Выбираю случайное слово из случайного словаря и отображаю его пользователю для перевода.
+
+        :param quizlet:
+        :return: none
+        """
         clear_screen()
         res = quizlet.random_translation()
         if res:
             quizlet.results("Вы перевели все слова во всех словарях.\n")
-            chosen_action = wait('S')
+            wait('S')
         else:
             quizlet.post_translation_actions()
             chosen_action = wait(('N', 'S', 'R'))
@@ -41,9 +63,14 @@ class Menu:
                 self.quizlet_start(quizlet)
             if chosen_action == purify('R'):
                 quizlet.results()
-                chosen_action = wait('S')
+                wait('S')
 
     def help(self):
+        """
+        Вывожу для пользователя справку о работе с программой
+
+        :return: none
+        """
         clear_screen()
         print(""" 
         Справка по работе с программой
@@ -66,4 +93,4 @@ class Menu:
             Стоит отметить, что после корректного перевода слова, оно уберется из пула переводов в текущей викторине.                                    
         """)
         print("\n\nНажмите клавишу \"S\" для выхода в главное меню\n")
-        chosen_action = wait('S')
+        wait('S')
